@@ -1,7 +1,4 @@
 import React from 'react'
-import { useContractKit } from '@celo-tools/use-contractkit'
-import logo from './logo.svg'
-import './App.css'
 import Navbar from 'react-bootstrap/esm/Navbar'
 import Container from 'react-bootstrap/esm/Container'
 import Image from 'react-bootstrap/esm/Image'
@@ -11,11 +8,6 @@ import Col from 'react-bootstrap/esm/Col'
 function Article() {
     return (
         <>
-            <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="#home" style={{ margin: 'auto', fontFamily: 'Fraktur', fontSize: '30px' }}>
-                    National News
-                </Navbar.Brand>
-            </Navbar>
             <Container fluid="sm">
                 <Row className="justify-content-md-center mt-1 mb-3">
                     <Col md="auto"><Image src="https://www.businessinsider.in/photo/81140066/Master.jpg" fluid style={{ maxHeight: '500px' }} /></Col>
