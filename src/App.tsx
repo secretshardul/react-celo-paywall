@@ -2,6 +2,7 @@ import React from 'react';
 import { useContractKit } from '@celo-tools/use-contractkit'
 import logo from './logo.svg';
 import './App.css';
+import Article from './Article'
 
 function App() {
   const {
@@ -19,16 +20,22 @@ function App() {
   console.log('Address', address)
 
   return (
-    <main>
-      <h1>Celo Voting DApp</h1>
-
-      {
-      address
-        ? undefined
-          : <button onClick={openModal}>Click here to connect your wallet</button>
-      }
-    </main >
+    <>
+      <Article />
+    </>
   )
+
+  // return (
+  //   <main>
+  //     <h1>Celo Voting DApp</h1>
+
+  //     {
+  //     address
+  //       ? undefined
+  //         : <button onClick={openModal}>Click here to connect your wallet</button>
+  //     }
+  //   </main >
+  // )
 }
 
 export default App;
