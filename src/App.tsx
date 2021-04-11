@@ -1,26 +1,34 @@
 import React from 'react';
+import { useContractKit } from '@celo-tools/use-contractkit'
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  const {
+    kit,
+    address,
+    network,
+    updateNetwork,
+    openModal,
+    destroy,
+    sendTransaction,
+    performActions,
+  } = useContractKit();
+
+  console.log('Modal', openModal)
+  console.log('Address', address)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <main>
+      <h1>Celo Voting DApp</h1>
+
+      {
+      address
+        ? undefined
+          : <button onClick={openModal}>Click here to connect your wallet</button>
+      }
+    </main >
+  )
 }
 
 export default App;
