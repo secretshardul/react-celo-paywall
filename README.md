@@ -1,46 +1,34 @@
-# Getting Started with Create React App
+# Celo one-time paywall
+Celo paywall is a new way for media websites to monetize their content. Paywalls today ask for monthly subscription fees. But actually people consume content from multiple sites. It is impractical for the casual reader to purchase subscriptions for multiple sites. They end up installing paywall removal tools, which results in lost revenue for websites.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Instead we can let users pay for and read individual articles. The challenge is that fiat payment processors are oriented towards larger payments due to overhead cost of transfers. Stripe has a minimum payment requirement of USD 0.50.
 
-## Available Scripts
+We can overcome this problem through crypto payments on Celo. Low gas fees allows us to operate this model with better margins and low overhead.
 
-In the project directory, you can run:
+# Live demo
+https://celo-paywall.netlify.app/
 
-### `npm start`
+# Video
+[![Celo paywall demo](https://user-images.githubusercontent.com/49580849/114779407-b6596f80-9d93-11eb-84e7-63759863d35c.png)](https://www.youtube.com/watch?v=ySXfLBxzMx4)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Implementation
+Celo paywall is simple to integrate. You just need to wrap your content with the `<Paywall>` component.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```tsx
+<Paywall pageId="unique-id-for-page">
+    <Article />
+</Paywall>
+```
 
-### `npm test`
+# Working
+1. User logs in with Celo wallet. Valora, Metamask and others are supported.
+2. The paywall code queries the smart contract to check if user has purchased access to the article.
+3. If user has not purchased access, a modal is displayed asking user to make payment.
+4. A `payable` call is made to the smart contract. The user's address and page ID is stored in the contract, after which user gets access to the article.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Tech stack
+- React
+- Typescript
+- Truffle
+- Solidity smart contracts on Celo
+- Celo `use-contractkit`

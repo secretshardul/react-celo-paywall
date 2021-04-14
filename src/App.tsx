@@ -11,9 +11,10 @@ function App() {
             <Navbar bg="dark" variant="dark">
                 <Navbar.Brand href="#home" style={{ margin: 'auto', fontFamily: 'Fraktur', fontSize: '30px' }}>
                     National News
-        </Navbar.Brand>
+                </Navbar.Brand>
             </Navbar>
-            <Paywall pageId="uniquegg">
+
+            <Paywall pageId="unique-page-id">
                 <Article />
             </Paywall>
         </>
