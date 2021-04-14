@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useContractKit, Alfajores } from '@celo-tools/use-contractkit'
-// import { Network } from '@celo-tools/use-contractkit'
+import type { Contract } from '@celo/contractkit/node_modules/web3-eth-contract/types/index'
 
 import Button from 'react-bootstrap/esm/Button'
 import Modal from 'react-bootstrap/esm/Modal'
@@ -16,6 +16,14 @@ function PurchaseModal({ address, pageId }: PurchaseModalProps) {
     const { kit, network, updateNetwork } = useContractKit()
     const [purchased, setPurchaseState] = useState(true)
 
+    const abi = PaywallContract.abi as AbiItem[]
+    const contractAddress = PaywallContract.networks[44787].address
+
+    const instance = new kit.web3.eth.Contract(
+        abi,
+        contractAddress
+    )
+
     useEffect(() => {
         updateNetwork(Alfajores)
 
@@ -24,19 +32,18 @@ function PurchaseModal({ address, pageId }: PurchaseModalProps) {
         console.log('ABI', PaywallContract.abi)
         console.log('Artifact network data', PaywallContract.networks)
 
-        const abi = PaywallContract.abi as AbiItem[]
 
-        const contractAddress = PaywallContract.networks[44787].address
 
-        const instance = new kit.web3.eth.Contract(
-            abi,
-            contractAddress
-        )
+        // instance = new kit.web3.eth.Contract(
+        //     abi,
+        //     contractAddress
+        // )
+        // console.log('Instance initialized', instance)
 
         async function checkPurchaseFromContract(address: string, pageId: string) {
             console.log('Checking purchase')
 
-            const userPurchaseCount = await instance.methods.getUserPurchaseCount(address).call()
+            const userPurchaseCount = await instance!.methods.getUserPurchaseCount(address).call()
             console.log(userPurchaseCount)
 
             if(!userPurchaseCount) {
@@ -45,7 +52,7 @@ function PurchaseModal({ address, pageId }: PurchaseModalProps) {
                 let purchasedCheckResponse = false
 
                 for(let i = 0; i < userPurchaseCount; i++) {
-                    const purchasedArticleId = await instance.methods.userPurchases(address, i).call()
+                    const purchasedArticleId = await instance!.methods.userPurchases(address, i).call()
                     console.log('Purchased article ID', purchasedArticleId)
 
                     if(purchasedArticleId === pageId) {
@@ -64,11 +71,16 @@ function PurchaseModal({ address, pageId }: PurchaseModalProps) {
 
     async function purchaseAccess() {
         console.log('Purchasing')
+        console.log('Contract instance during purchase', instance)
 
-        // TODO mutate contract
-        setTimeout(() => {
+        try {
+            const txObject = await instance.methods.purchaseAccess(pageId)
+            const purchaseResponse = await kit.sendTransactionObject(txObject, { from: address })
+            console.log('Purchase response', purchaseResponse)
             setPurchaseState(true)
-        }, 2000)
+        } catch(error) {
+            console.error(error)
+        }
     }
 
     return (

@@ -13,7 +13,7 @@ function App() {
                     National News
         </Navbar.Brand>
             </Navbar>
-            <Paywall pageId="1234">
+            <Paywall pageId="2345">
                 <Article />
             </Paywall>
         </>
