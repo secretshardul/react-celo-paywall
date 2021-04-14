@@ -22,9 +22,18 @@ Celo paywall is simple to integrate. You just need to wrap your content with the
 
 # Working
 1. User logs in with Celo wallet. Valora, Metamask and others are supported.
+
+    ![login](https://user-images.githubusercontent.com/49580849/114780593-3f24db00-9d95-11eb-8d70-93ba900082ad.png)
+
 2. The paywall code queries the smart contract to check if user has purchased access to the article.
+
 3. If user has not purchased access, a modal is displayed asking user to make payment.
+
+    ![purchase](https://user-images.githubusercontent.com/49580849/114780567-37fdcd00-9d95-11eb-9811-ebeb93f9f7ee.png)
+
 4. A `payable` call is made to the smart contract. The user's address and page ID is stored in the contract, after which user gets access to the article.
+
+    ![unlocked page](https://user-images.githubusercontent.com/49580849/114780573-392efa00-9d95-11eb-877a-4c5db512e3e9.png)
 
 # Tech stack
 - React
