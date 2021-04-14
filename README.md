@@ -41,3 +41,13 @@ Celo paywall is simple to integrate. You just need to wrap your content with the
 - Truffle
 - Solidity smart contracts on Celo
 - Celo `use-contractkit`
+
+# What does DeFi (or an Ethereum native app) look like when it's designed for mobile-first?
+Mobile first DeFi should provide:
+- Ease of use
+- Inclusiveness
+
+The paywall has a mobile first design while also being adaptable for desktop. Majority of traffic on media sites comes from mobile devices.
+
+# Impact
+It's a win-win for readers and media publishers. Readers only pay what they read, and publishers earn revenue which is generally lost due to paywall circumvention software.
