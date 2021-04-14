@@ -17,7 +17,8 @@
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "typescript": "^4.2.4",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "web3": "^1.3.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,5 +43,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@celo/contractkit": "*",
+    "dotenv": "^8.2.0",
+    "truffle": "^5.3.1"
   }
 }
