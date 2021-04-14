@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useContractKit } from '@celo-tools/use-contractkit'
+import { Alfajores, useContractKit } from '@celo-tools/use-contractkit'
 import PurchaseModal from '../PurchaseModal/PurchaseModal'
 
 interface Props {
@@ -8,18 +8,17 @@ interface Props {
 }
 
 function Paywall({ children, pageId }: Props) {
-    const { address, openModal } = useContractKit()
+    const { address, openModal, updateNetwork, closeModal, modalIsOpen } = useContractKit()
+
+    useEffect(() => {
+        updateNetwork(Alfajores)
+    }, [])
+
 
     return (
         <>
             {
                 address
-                    // ? (
-                    //     purchased
-                    //         ? undefined
-                    //         // : <PurchaseModal address={address} pageId={pageId} />
-                    //         : PurchaseModal({ address, pageId })
-                    // )
                     // ? undefined
                     ? <PurchaseModal address={address} pageId={pageId} />
                     : openModal() // Display login modal

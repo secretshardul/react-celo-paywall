@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useContractKit, Alfajores } from '@celo-tools/use-contractkit'
-import type { Contract } from '@celo/contractkit/node_modules/web3-eth-contract/types/index'
-
+import { useContractKit } from '@celo-tools/use-contractkit'
 import Button from 'react-bootstrap/esm/Button'
 import Modal from 'react-bootstrap/esm/Modal'
 import PaywallContract from '../artifacts/Paywall.json'
@@ -13,7 +11,7 @@ interface PurchaseModalProps {
 }
 
 function PurchaseModal({ address, pageId }: PurchaseModalProps) {
-    const { kit, network, updateNetwork } = useContractKit()
+    const { kit } = useContractKit()
     const [purchased, setPurchaseState] = useState(true)
 
     const abi = PaywallContract.abi as AbiItem[]
@@ -25,44 +23,33 @@ function PurchaseModal({ address, pageId }: PurchaseModalProps) {
     )
 
     useEffect(() => {
-        updateNetwork(Alfajores)
-
-        console.log('Contract name', PaywallContract.contractName)
-        console.log('Network', network)
-        console.log('ABI', PaywallContract.abi)
-        console.log('Artifact network data', PaywallContract.networks)
-
-
-
-        // instance = new kit.web3.eth.Contract(
-        //     abi,
-        //     contractAddress
-        // )
-        // console.log('Instance initialized', instance)
-
         async function checkPurchaseFromContract(address: string, pageId: string) {
             console.log('Checking purchase')
 
-            const userPurchaseCount = await instance!.methods.getUserPurchaseCount(address).call()
-            console.log(userPurchaseCount)
+            try {
+                const userPurchaseCount = await instance!.methods.getUserPurchaseCount(address).call()
+                console.log(userPurchaseCount)
 
-            if(!userPurchaseCount) {
-                setPurchaseState(false)
-            } else {
-                let purchasedCheckResponse = false
+                if (!userPurchaseCount) {
+                    setPurchaseState(false)
+                } else {
+                    let purchasedCheckResponse = false
 
-                for(let i = 0; i < userPurchaseCount; i++) {
-                    const purchasedArticleId = await instance!.methods.userPurchases(address, i).call()
-                    console.log('Purchased article ID', purchasedArticleId)
+                    for (let i = 0; i < userPurchaseCount; i++) {
+                        const purchasedArticleId = await instance!.methods.userPurchases(address, i).call()
+                        console.log('Purchased article ID', purchasedArticleId)
 
-                    if(purchasedArticleId === pageId) {
-                        console.log('This article has been purchased')
-                        purchasedCheckResponse = true
-                        break
+                        if (purchasedArticleId === pageId) {
+                            console.log('This article has been purchased')
+                            purchasedCheckResponse = true
+                            break
+                        }
                     }
-                }
 
-                setPurchaseState(purchasedCheckResponse)
+                    setPurchaseState(purchasedCheckResponse)
+                }
+            } catch(error) {
+                window.location.reload()
             }
         }
 
@@ -70,13 +57,22 @@ function PurchaseModal({ address, pageId }: PurchaseModalProps) {
     }, [])
 
     async function purchaseAccess() {
-        console.log('Purchasing')
-        console.log('Contract instance during purchase', instance)
 
         try {
+            console.log('Purchasing for account', address)
+            console.log('Instance', instance)
             const txObject = await instance.methods.purchaseAccess(pageId)
-            const purchaseResponse = await kit.sendTransactionObject(txObject, { from: address })
-            console.log('Purchase response', purchaseResponse)
+            console.log('tx object', txObject)
+
+            const tx = await kit.sendTransactionObject(txObject, {
+                 from: address,
+                 gasPrice: 10 ** 11,
+                })
+            console.log('Transaction', tx)
+
+            let receipt = await tx.waitReceipt()
+            console.log('Receipt', receipt)
+
             setPurchaseState(true)
         } catch(error) {
             console.error(error)
