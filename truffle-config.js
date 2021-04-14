@@ -12,6 +12,7 @@ function getCeloProvider () {
 }
 
 module.exports = {
+    contracts_build_directory: "./src/artifacts",
     networks: {
         develop: {
             port: 8545,
